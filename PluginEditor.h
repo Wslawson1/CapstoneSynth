@@ -1,11 +1,11 @@
 /*
-  ==============================================================================
+==============================================================================
 
-    This file was auto-generated!
+This file was auto-generated!
 
-    It contains the basic framework code for a JUCE plugin editor.
+It contains the basic framework code for a JUCE plugin editor.
 
-  ==============================================================================
+==============================================================================
 */
 
 #pragma once
@@ -15,26 +15,28 @@
 #include "Oscillator.h"
 #include "EnvelopePanel.h"
 #include "Filter.h"
+#include "VolumeControlPanel.h"
 
 //==============================================================================
 /**
 */
-class SynthFramworkAudioProcessorEditor  : public AudioProcessorEditor
+class CapstoneSynthAudioProcessorEditor : public AudioProcessorEditor
 {
 public:
-    SynthFramworkAudioProcessorEditor (SynthFramworkAudioProcessor&);
-    ~SynthFramworkAudioProcessorEditor();
+	CapstoneSynthAudioProcessorEditor(CapstoneSynthAudioProcessor&);
+	~CapstoneSynthAudioProcessorEditor();
 
-    //==============================================================================
-    void paint (Graphics&) override;
-    void resized() override;
+	//==============================================================================
+	void paint(Graphics&) override;
+	void resized() override;
 
 private:
-    SynthFramworkAudioProcessor& processor;
+	CapstoneSynthAudioProcessor& processor;
 
 	Oscillator oscGui;
 	EnvelopePanel envelopeGui;
 	Filter filterGui;
+	VolumeControlPanel gainGui;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthFramworkAudioProcessorEditor)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CapstoneSynthAudioProcessorEditor)
 };

@@ -19,7 +19,7 @@
 class Oscillator    : public Component
 {
 public:
-    Oscillator(SynthFramworkAudioProcessor&);
+    Oscillator(CapstoneSynthAudioProcessor&);
     ~Oscillator();
 
     void paint (Graphics&) override;
@@ -36,12 +36,12 @@ private:
 	Label oscMenuLabel;
 	Label oscSelectionLabel;
 
-	ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> oscTypeSelection;
-	ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> numHarmonicsSelection;
-	ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> sliderTreeHarmonicFactor;
-	ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> sliderTreeHarmonicOffset;
+	std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> oscTypeSelection;
+	std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> numHarmonicsSelection;
+	std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> sliderTreeHarmonicFactor;
+	std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> sliderTreeHarmonicOffset;
 
-	SynthFramworkAudioProcessor& processor;
+	CapstoneSynthAudioProcessor& processor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Oscillator)
 };

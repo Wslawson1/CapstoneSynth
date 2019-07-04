@@ -1,11 +1,11 @@
 /*
-  ==============================================================================
+==============================================================================
 
-    This file was auto-generated!
+This file was auto-generated!
 
-    It contains the basic framework code for a JUCE plugin processor.
+It contains the basic framework code for a JUCE plugin processor.
 
-  ==============================================================================
+==============================================================================
 */
 
 #pragma once
@@ -13,57 +13,62 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SynthSound.h"
 #include "SynthVoice.h"
+//#include "SynthSound.h"
+//#include "SynthVoice.h"
 
 //==============================================================================
 /**
 */
-class SynthFramworkAudioProcessor  : public AudioProcessor
+class CapstoneSynthAudioProcessor : public AudioProcessor
 {
 public:
-    //==============================================================================
-    SynthFramworkAudioProcessor();
-    ~SynthFramworkAudioProcessor();
+	//==============================================================================
+	CapstoneSynthAudioProcessor();
+	~CapstoneSynthAudioProcessor();
 
-    //==============================================================================
-    void prepareToPlay (double sampleRate, int samplesPerBlock) override;
-    void releaseResources() override;
+	//==============================================================================
+	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
+	void releaseResources() override;
 
-   #ifndef JucePlugin_PreferredChannelConfigurations
-    bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
-   #endif
+#ifndef JucePlugin_PreferredChannelConfigurations
+	bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
+#endif
 
-    void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
+	void processBlock(AudioBuffer<float>&, MidiBuffer&) override;
 
-    //==============================================================================
-    AudioProcessorEditor* createEditor() override;
-    bool hasEditor() const override;
+	//==============================================================================
+	AudioProcessorEditor* createEditor() override;
+	bool hasEditor() const override;
 
-    //==============================================================================
-    const String getName() const override;
+	//==============================================================================
+	const String getName() const override;
 
-    bool acceptsMidi() const override;
-    bool producesMidi() const override;
-    bool isMidiEffect() const override;
-    double getTailLengthSeconds() const override;
+	bool acceptsMidi() const override;
+	bool producesMidi() const override;
+	bool isMidiEffect() const override;
+	double getTailLengthSeconds() const override;
 
-    //==============================================================================
-    int getNumPrograms() override;
-    int getCurrentProgram() override;
-    void setCurrentProgram (int index) override;
-    const String getProgramName (int index) override;
-    void changeProgramName (int index, const String& newName) override;
+	//==============================================================================
+	int getNumPrograms() override;
+	int getCurrentProgram() override;
+	void setCurrentProgram(int index) override;
+	const String getProgramName(int index) override;
+	void changeProgramName(int index, const String& newName) override;
 
-    //==============================================================================
-    void getStateInformation (MemoryBlock& destData) override;
-    void setStateInformation (const void* data, int sizeInBytes) override;
+	//==============================================================================
+	void getStateInformation(MemoryBlock& destData) override;
+	void setStateInformation(const void* data, int sizeInBytes) override;
 
 	//handled differently through value tree
 	float attackTime;
 	AudioProcessorValueTreeState tree;
+	//juce::UndoManager undoManager;
+	//const Identifier treeName = "PARAMETERS";
+	AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 private:
-    //==============================================================================
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthFramworkAudioProcessor)
-	Synthesiser mySynth;
+	//==============================================================================
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CapstoneSynthAudioProcessor)
+		Synthesiser mySynth;
 	SynthVoice* myVoice;
 	double lastSampleRate;
 };

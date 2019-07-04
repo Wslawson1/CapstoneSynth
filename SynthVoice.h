@@ -26,6 +26,12 @@ public:
 		return dynamic_cast<SynthSound*>(sound) != nullptr;
 	}
 
+	void getGainParams(float* gain, float* harmonicDropoff)
+	{
+		this->gain = *gain;
+		this->harmonicDropoff = *harmonicDropoff;
+	}
+
 	void getOscParams(float* oscType, float* numHarmonics, float* harmonicFactor, float* harmonicOffset)
 	{
 		this->oscType = (int)*oscType;
@@ -51,12 +57,13 @@ public:
 
 	double setHarmonics()
 	{
-		double theWave = setOscType(0, frequency);
+		double theWave = 0;
 		double theFreq = frequency;
-		for (int currentHarmonic = 1; currentHarmonic <= numHarmonics; currentHarmonic++)
+		for (int currentHarmonic = 0; currentHarmonic <= numHarmonics; currentHarmonic++)
 		{
-			theFreq = theFreq * harmonicFactor + harmonicOffset;
-			theWave += setOscType(currentHarmonic, theFreq) / (currentHarmonic + 1);
+			theWave += setOscType(currentHarmonic, theFreq) * (harmonicDropoff / (currentHarmonic + 1));
+			theFreq = (theFreq * harmonicFactor) - harmonicOffset;
+
 		}
 		return theWave;
 	}	
@@ -93,6 +100,8 @@ public:
 		env1.trigger = 1;
 		level = velocity;
 		frequency = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+		Logger::outputDebugString(std::to_string(this->numHarmonics));
+
 	}
 
 	void stopNote(float velocity, bool allowTailOff)
@@ -120,7 +129,7 @@ public:
 		{
 			for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
 			{
-				outputBuffer.addSample(channel, startSample, setFilter());
+				outputBuffer.addSample(channel, startSample, setFilter() * gain);
 			}
 			++startSample;
 		}
@@ -130,7 +139,7 @@ private:
 	double level;
 	double frequency;
 
-	maxiOsc* oscillators[6] = { new maxiOsc(), new maxiOsc, new maxiOsc, new maxiOsc, new maxiOsc, new maxiOsc };
+	maxiOsc* oscillators[10] = { new maxiOsc(), new maxiOsc, new maxiOsc, new maxiOsc, new maxiOsc, new maxiOsc, new maxiOsc, new maxiOsc, new maxiOsc, new maxiOsc };
 	int oscType;
 	int numHarmonics;
 	float harmonicFactor;
@@ -143,5 +152,7 @@ private:
 	float filterCutoff;
 	float filterRes;
 
+	float gain;
+	float harmonicDropoff;
 };
 

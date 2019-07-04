@@ -12,7 +12,7 @@
 #include "Filter.h"
 
 //==============================================================================
-Filter::Filter(SynthFramworkAudioProcessor& p) :
+Filter::Filter(CapstoneSynthAudioProcessor& p) :
 	processor(p)
 {
     // In your constructor, you should add any child components, and
@@ -30,7 +30,11 @@ Filter::Filter(SynthFramworkAudioProcessor& p) :
 	filterCutoffSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 50.0, 30.0);
 	filterCutoffSlider.setNumDecimalPlacesToDisplay(2);
 	filterCutoffSlider.setTextValueSuffix("hz");
-	sliderTreeFilterCutoff = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "filtercutoff", filterCutoffSlider);
+	filterCutoffSlider.setDoubleClickReturnValue(true, 400.0f);
+	
+	//sliderTreeFilterCutoff = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "filtercutoff", filterCutoffSlider);
+	sliderTreeFilterCutoff = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.tree, "filtercutoff", filterCutoffSlider);
+
 	filterCutoffSlider.setSkewFactorFromMidPoint(1000.0);
 	addAndMakeVisible(&filterCutoffSlider);
 
@@ -39,6 +43,7 @@ Filter::Filter(SynthFramworkAudioProcessor& p) :
 	filterResonanceSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 50.0, 30.0);
 	filterResonanceSlider.setNumDecimalPlacesToDisplay(2);
 	filterResonanceSlider.setTextValueSuffix("db");
+	filterResonanceSlider.setDoubleClickReturnValue(true, 1.0f);
 	addAndMakeVisible(&filterResonanceSlider);
 
 	filterCutoffLabel.setText("cutoff", dontSendNotification);
@@ -53,8 +58,8 @@ Filter::Filter(SynthFramworkAudioProcessor& p) :
 	addAndMakeVisible(&filterTypeLabel);
 	filterTypeLabel.attachToComponent(&filterTypeMenu, false);
 
-	filterTypeVal = new AudioProcessorValueTreeState::ComboBoxAttachment(processor.tree, "filtertype", filterTypeMenu);
-	sliderTreeResonance = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "resonance", filterResonanceSlider);
+	sliderTreeResonance = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.tree, "resonance", filterResonanceSlider);
+	filterTypeVal = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(processor.tree, "filtertype", filterTypeMenu);
 
 }
 

@@ -19,7 +19,7 @@
 class Filter    : public Component
 {
 public:
-    Filter(SynthFramworkAudioProcessor&);
+    Filter(CapstoneSynthAudioProcessor&);
     ~Filter();
 
     void paint (Graphics&) override;
@@ -34,10 +34,11 @@ private:
 	Label filterResonanceLabel;
 	Label filterTypeLabel;
 	
-	SynthFramworkAudioProcessor& processor;
+	CapstoneSynthAudioProcessor& processor;
 
-	ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> sliderTreeFilterCutoff;
-	ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> sliderTreeResonance;
-	ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> filterTypeVal;
+	std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> sliderTreeFilterCutoff;
+	std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> sliderTreeResonance;
+	std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> filterTypeVal;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Filter)
 };

@@ -20,7 +20,7 @@
 class EnvelopePanel    : public Component
 {
 public:
-    EnvelopePanel(SynthFramworkAudioProcessor&);
+    EnvelopePanel(CapstoneSynthAudioProcessor&);
     ~EnvelopePanel();
 
     void paint (Graphics&) override;
@@ -28,7 +28,7 @@ public:
 
 private:
 
-	SynthFramworkAudioProcessor& processor;
+	CapstoneSynthAudioProcessor& processor;
 
 	Slider attackSlider;
 	Slider decaySlider;
@@ -40,10 +40,10 @@ private:
 	Label sustainLabel;
 	Label releaseLabel;
 
-	ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> sliderTreeAttack;
-	ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> sliderTreeDecay;
-	ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> sliderTreeSustain;
-	ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> sliderTreeRelease;
+	std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> sliderTreeAttack;
+	std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> sliderTreeDecay;
+	std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> sliderTreeSustain;
+	std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> sliderTreeRelease;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EnvelopePanel)
 };

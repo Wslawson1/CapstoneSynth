@@ -12,7 +12,7 @@
 #include "Oscillator.h"
 
 //==============================================================================
-Oscillator::Oscillator(SynthFramworkAudioProcessor& p) :
+Oscillator::Oscillator(CapstoneSynthAudioProcessor& p) :
 processor(p)
 {
 	setSize(400, 400);
@@ -23,6 +23,10 @@ processor(p)
 	oscMenu.addItem("4", 4);
 	oscMenu.addItem("5", 5);
 	oscMenu.addItem("6", 6);
+	oscMenu.addItem("7", 7);
+	oscMenu.addItem("8", 8);
+	oscMenu.addItem("9", 9);
+	oscMenu.addItem("10", 10);
 	addAndMakeVisible(&oscMenu);
 
 	oscSelection.addItem("sine", 1);
@@ -32,7 +36,7 @@ processor(p)
 
 	oscMenu.setJustificationType(Justification::centred);
 
-	numHarmonicsSelection = new AudioProcessorValueTreeState::ComboBoxAttachment(processor.tree, "numharmonics", oscMenu);
+	numHarmonicsSelection = std::make_unique< AudioProcessorValueTreeState::ComboBoxAttachment>(processor.tree, "numharmonics", oscMenu);
 
 	addAndMakeVisible(&oscMenuLabel);
 	addAndMakeVisible(&oscSelectionLabel);
@@ -44,17 +48,20 @@ processor(p)
 	oscSelectionLabel.attachToComponent(&oscSelection, false);
 
 	harmonicFactorSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
-	harmonicFactorSlider.setRange(0.1f, 5000.0f);
-	harmonicFactorSlider.setValue(1.01f);
+	harmonicFactorSlider.setRange(0.01f, 2.5f);
+	//harmonicFactorSlider.setValue(1.01f);
 	harmonicFactorSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 50.0, 30.0);
 	harmonicFactorSlider.setNumDecimalPlacesToDisplay(1);
+	harmonicFactorSlider.setDoubleClickReturnValue(true, 1.01f);
 	addAndMakeVisible(&harmonicFactorSlider);
+
 
 	harmonicOffsetSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
 	harmonicOffsetSlider.setRange(0.1f, 5000.0f);
 	harmonicOffsetSlider.setValue(0.1f);
 	harmonicOffsetSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 50.0, 30.0);
 	harmonicOffsetSlider.setNumDecimalPlacesToDisplay(1);
+	harmonicOffsetSlider.setDoubleClickReturnValue(true, 0.0f);
 	addAndMakeVisible(&harmonicOffsetSlider);
 
 	addAndMakeVisible(&harmonicFactorLabel);
@@ -66,10 +73,10 @@ processor(p)
 	harmonicFactorLabel.attachToComponent(&harmonicFactorSlider, false);
 	harmonicOffsetLabel.attachToComponent(&harmonicOffsetSlider, false);
 
-	sliderTreeHarmonicFactor = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "harmonicfactor", harmonicFactorSlider);
-	sliderTreeHarmonicOffset = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "harmonicoffset", harmonicOffsetSlider);
-	oscTypeSelection = new AudioProcessorValueTreeState::ComboBoxAttachment(processor.tree, "osctype", oscSelection);
-	harmonicFactorSlider.setSkewFactorFromMidPoint(2.5f);
+	sliderTreeHarmonicFactor = std::make_unique< AudioProcessorValueTreeState::SliderAttachment>(processor.tree, "harmonicfactor", harmonicFactorSlider);
+	sliderTreeHarmonicOffset = std::make_unique< AudioProcessorValueTreeState::SliderAttachment>(processor.tree, "harmonicoffset", harmonicOffsetSlider);
+	oscTypeSelection = std::make_unique< AudioProcessorValueTreeState::ComboBoxAttachment>(processor.tree, "osctype", oscSelection);
+	harmonicFactorSlider.setSkewFactorFromMidPoint(1.5f);
 }
 
 Oscillator::~Oscillator()
